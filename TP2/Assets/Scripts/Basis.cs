@@ -26,12 +26,13 @@ public class Basis: MonoBehaviour {
 		}
 	}
 
+	public void setOpenUniform(int nb) {
+
+	}
 
 	public List<Vector3> DrawBasis(int k) {
 		int nbPoint = 30;
 		List<Vector3> res=new List<Vector3>();
-	    	
-		// TODO : compute points of the curve in l to build the drawn curve.
 
 		for (int i = 0; i < nbPoint; i++) {
 			double t = (i * 1.0) / (nbPoint * 1.0);
@@ -49,8 +50,19 @@ public class Basis: MonoBehaviour {
 		double res = 0.0;
 
 		if (p > 0) {
-			res = ((t - knot [k]) / (knot [k + p] - knot [k])) * EvalNkp (k, p - 1, t) + ((knot [p + k + 1] - t) / (knot [p + k + 1] - knot [k + 1])) * EvalNkp (k + 1, p - 1, t); 
-//			Debug.Log (res + " deg: " + p + " t: " + t);
+			double n1 = (t - knot [k]);
+			double d1 = (knot [k + p] - knot [k]);
+			double left = 1.0;
+			if (n1 != 0 || d1 != 0)
+				left = n1 / d1;
+
+			double n2 = (knot [p + k + 1] - t);
+			double d2 = (knot [p + k + 1] - knot [k + 1]);
+			double right = 1.0;
+			if (n2 != 0 || d2 != 0)
+				right = n2 / d2;
+			
+			res = left * EvalNkp (k, p - 1, t) + right * EvalNkp (k + 1, p - 1, t); 
 		} else if (t >= knot [k] && t < knot [k + 1])
 			res = 1.0;
 
