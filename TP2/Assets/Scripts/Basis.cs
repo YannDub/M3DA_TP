@@ -56,6 +56,10 @@ public class Basis: MonoBehaviour {
 
 	}
 
+	public void setBezier() {
+
+	}
+
 	public List<Vector3> DrawBasis(int k) {
 		int nbPoint = 30;
 		List<Vector3> res=new List<Vector3>();
