@@ -82,8 +82,8 @@ public class Curve : MonoBehaviour {
 			double start = this.StartInterval ();
 			double end = this.EndInterval ();
 			double t = start + i * 1.0 * ((end - start) / 30.0);
-			Vector3 point = PointCurve (t);
-			l.Add(point);
+			//Vector3 point = PointCurve (t);
+			//l.Add(point);
 		}
 
 		return l;
