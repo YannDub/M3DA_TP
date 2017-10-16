@@ -67,7 +67,8 @@ public class Curve : MonoBehaviour {
 		Vector3 result = Vector3.zero;
 
 		// TODO : compute the point of the curve at u
-		for (int i = 0; i < position.Count; i++) {
+		int nbBasis = basis.knot.Count - basis.degree - 1;
+		for (int i = 0; i < nbBasis; i++) {
 			result += ((float) basis.EvalNkp(i, basis.degree, u)) * position[i];
 		}
 
@@ -82,8 +83,8 @@ public class Curve : MonoBehaviour {
 			double start = this.StartInterval ();
 			double end = this.EndInterval ();
 			double t = start + i * 1.0 * ((end - start) / 30.0);
-			//Vector3 point = PointCurve (t);
-			//l.Add(point);
+			Vector3 point = PointCurve (t);
+			l.Add(point);
 		}
 
 		return l;
