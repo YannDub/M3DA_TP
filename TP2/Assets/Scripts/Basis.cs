@@ -7,13 +7,25 @@ public class Basis: MonoBehaviour {
 
 	public List<double> knot; // 
 	public int degree=2;      //
+	private int integration = 0;
 
 	public double currentT =0; // to get a sample point (represented by the blue vertical bar).
 
 	// Use this for initialization
 	void Start () {
 		degree = 2;
-		SetUniform (5); // TODO : replace with SetOpenUniform, SetBezier, ...
+		//SetUniform (5); // TODO : replace with SetOpenUniform, SetBezier, ...
+		switch (integration) {
+		case 0:
+			SetUniform (5);
+			break;
+		case 1:
+			SetOpenUniform (5);
+			break;
+		default:
+			SetUniform (5);
+			break;
+		}
 	}
 
 
@@ -25,7 +37,22 @@ public class Basis: MonoBehaviour {
 		}
 	}
 
-	public void setOpenUniform(int nb) {
+	public void SetOpenUniform(int nb) {
+		knot.Clear ();
+
+		if (2 * (degree + 1) <= nb) {
+			for (int i = 0; i < degree; i++) {
+				knot.Add (0.0);
+			}
+
+			for (int i = 0; i < nb - degree; i++) {
+				knot.Add ((i * 1.0) / ((nb - degree) * 1.0));
+			}
+
+			for (int i = 0; i < degree; i++) {
+				knot.Add (1.0);
+			}
+		}
 
 	}
 
@@ -72,12 +99,26 @@ public class Basis: MonoBehaviour {
 
 	public void SetFromControlCount(int nb) {
 		if (degree + nb + 1 != knot.Count) {
-			SetUniform (degree + nb + 1);
+			switch (integration) {
+			case 0:
+				SetUniform (degree + nb + 1);
+				break;
+			case 1:
+				SetOpenUniform (degree + nb + 1);
+				break;
+			default:
+				SetUniform (degree + nb + 1);
+				break;
+			}
 		}
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.W)) {
+			this.integration++;
+			this.integration = integration % 2;
+		}
 	}
 
 }
