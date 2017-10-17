@@ -23,6 +23,9 @@ public class Basis: MonoBehaviour {
 		case 1:
 			SetOpenUniform (5);
 			break;
+		case 2:
+			SetBezier (3);
+			break;
 		default:
 			SetUniform (5);
 			break;
@@ -32,6 +35,7 @@ public class Basis: MonoBehaviour {
 
 	public void SetUniform(int nb) {
 		knot.Clear();
+		this.degree = 2;
 
 		for (int i = 0; i < nb; i++) {
 			knot.Add ((i * 1.0) / (nb * 1.0));
@@ -40,6 +44,7 @@ public class Basis: MonoBehaviour {
 
 	public void SetOpenUniform(int nb) {
 		knot.Clear ();
+		this.degree = 2;
 
 		if (2 * (degree + 1) <= nb) {
 			for (int i = 0; i < degree; i++) {
@@ -57,8 +62,16 @@ public class Basis: MonoBehaviour {
 
 	}
 
-	public void setBezier() {
+	public void SetBezier(int nb) {
+		knot.Clear ();
 
+		for (int i = 0; i < nb / 2; i++) {
+			knot.Add (0.0);
+		}
+
+		for (int i = 0; i < nb / 2; i++) {
+			knot.Add (1.0);
+		}
 	}
 
 	public List<Vector3> DrawBasis(int k) {
@@ -111,6 +124,10 @@ public class Basis: MonoBehaviour {
 			case 1:
 				SetOpenUniform (degree + nb + 1);
 				break;
+			case 2:
+				this.degree = nb - 1;
+				SetBezier (degree + nb + 1);
+				break;
 			default:
 				SetUniform (degree + nb + 1);
 				break;
@@ -122,7 +139,7 @@ public class Basis: MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.C)) {
 			this.integration++;
-			this.integration = integration % 2;
+			this.integration = integration % 3;
 		}
 	}
 
