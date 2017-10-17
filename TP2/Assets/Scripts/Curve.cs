@@ -14,8 +14,9 @@ public class Curve : MonoBehaviour {
 		position = new List<Vector3> ();
 		weight = new List<float> ();
 		basis = GameObject.Find ("BasisU").GetComponent<Basis> ();
-		SetSegment ();
+		//SetSegment ();
 		basis.SetFromControlCount (position.Count);
+		SetCircle();
 	}
 
 	public bool IsSamplePoint() {
@@ -63,15 +64,32 @@ public class Curve : MonoBehaviour {
 		Add (new Vector3 (0.6f, 0.5f, 0));
 	}
 
+	public void SetCircle() {
+		Clear ();
+		Add (new Vector3 (0.0f, 0.0f, 0.0f));
+		Add (new Vector3 (-0.5f, 0.0f, 0.0f));
+		Add (new Vector3 (-0.25f, Mathf.Sqrt(0.5f * 0.5f - 0.25f * 0.25f), 0.0f));
+		Add (new Vector3 (-0.0f, Mathf.Sqrt(1f * 1f - 0.5f * 0.5f), 0.0f));
+		Add (new Vector3 (0.25f, Mathf.Sqrt(0.5f * 0.5f - 0.25f * 0.25f), 0.0f));
+		Add (new Vector3 (0.5f, 0.0f, 0.0f));
+		Add (new Vector3 (0.0f, 0.0f, 0.0f));
+
+		weight [1] = weight [3] = weight [5] = Mathf.Cos (Mathf.Deg2Rad * 60);
+	}
+
 	Vector3 PointCurve(double u) {
 		Vector3 result = Vector3.zero;
+		float w = 0;
 
 		// TODO : compute the point of the curve at u
 		int nbBasis = basis.knot.Count - basis.degree - 1;
 		for (int i = 0; i < nbBasis; i++) {
-			result += ((float) basis.EvalNkp(i, basis.degree, u)) * position[i];
+			float eval = ((float)basis.EvalNkp (i, basis.degree, u));
+			result += eval * position[i];
+			w += eval * weight [i];
 		}
 
+		result = result / w;
 		return result; // * 1.0f / (float)w;
 	}
 
@@ -83,7 +101,6 @@ public class Curve : MonoBehaviour {
 			double start = this.StartInterval ();
 			double end = this.EndInterval ();
 			double t = start + (end - start) * ((double)i / (30.0 - 1.0));
-			Debug.Log (t);
 			Vector3 point = PointCurve (t);
 			l.Add(point);
 		}

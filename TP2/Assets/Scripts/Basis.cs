@@ -34,11 +34,27 @@ public class Basis: MonoBehaviour {
 
 
 	public void SetUniform(int nb) {
-		knot.Clear();
+		/*knot.Clear();
 		this.degree = 2;
 
 		for (int i = 0; i < nb; i++) {
 			knot.Add ((i * 1.0) / (nb * 1.0));
+		}*/
+		knot.Clear ();
+		for (int i = 0; i < 3; i++) {
+			knot.Add (0);
+		}
+
+		for (int i = 0; i < 2; i++) {
+			knot.Add (1f/3f);
+		}
+
+		for (int i = 0; i < 2; i++) {
+			knot.Add (2f/3f);
+		}
+
+		for (int i = 0; i < 3; i++) {
+			knot.Add (1);
 		}
 	}
 
