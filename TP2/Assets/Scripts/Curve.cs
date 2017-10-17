@@ -39,7 +39,7 @@ public class Curve : MonoBehaviour {
 		double res = -1.0; // hack to avoid a green dot if TODO are not done.
 
 		// TODO : end value of the definition of the curve
-		res = basis.knot[position.Count - 1];
+		res = basis.knot[basis.knot.Count - 1] - 0.00001;
 
 		return res;
 	}
@@ -82,7 +82,8 @@ public class Curve : MonoBehaviour {
 		for (int i = 0; i < 30; i++) {
 			double start = this.StartInterval ();
 			double end = this.EndInterval ();
-			double t = start + i * 1.0 * ((end - start) / 30.0);
+			double t = start + (end - start) * ((double)i / (30.0 - 1.0));
+			Debug.Log (t);
 			Vector3 point = PointCurve (t);
 			l.Add(point);
 		}

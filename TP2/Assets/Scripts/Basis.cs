@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Basis: MonoBehaviour {
 
@@ -45,8 +46,8 @@ public class Basis: MonoBehaviour {
 				knot.Add (0.0);
 			}
 
-			for (int i = 0; i < nb - degree; i++) {
-				knot.Add ((i * 1.0) / ((nb - degree) * 1.0));
+			for (int i = 0; i <= nb - (2 * degree) - 1; i++) {
+				knot.Add ((i * 1.0) / ((nb - (2 * degree) - 1) * 1.0));
 			}
 
 			for (int i = 0; i < degree; i++) {
@@ -83,13 +84,13 @@ public class Basis: MonoBehaviour {
 			double n1 = (t - knot [k]);
 			double d1 = (knot [k + p] - knot [k]);
 			double left = 0.0;
-			if (d1 != 0)
+			if (Math.Abs(d1) > 0.0001)
 				left = n1 / d1;
 
 			double n2 = (knot [p + k + 1] - t);
 			double d2 = (knot [p + k + 1] - knot [k + 1]);
 			double right = 0.0;
-			if (d2 != 0)
+			if (Math.Abs(d2) > 0.0001)
 				right = n2 / d2;
 			
 			res = left * EvalNkp (k, p - 1, t) + right * EvalNkp (k + 1, p - 1, t); 
@@ -119,7 +120,7 @@ public class Basis: MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if(Input.GetKeyDown(KeyCode.W)) {
+		if(Input.GetKeyDown(KeyCode.C)) {
 			this.integration++;
 			this.integration = integration % 2;
 		}
