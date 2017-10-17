@@ -119,6 +119,7 @@ public class Basis: MonoBehaviour {
 		if (degree + nb + 1 != knot.Count) {
 			switch (integration) {
 			case 0:
+				this.degree = 2;
 				SetUniform (degree + nb + 1);
 				break;
 			case 1:
