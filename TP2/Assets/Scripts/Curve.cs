@@ -85,7 +85,7 @@ public class Curve : MonoBehaviour {
 		int nbBasis = basis.knot.Count - basis.degree - 1;
 		for (int i = 0; i < nbBasis; i++) {
 			float eval = ((float)basis.EvalNkp (i, basis.degree, u));
-			result += eval * position[i];
+			result += eval * position[i] * weight[i];
 			w += eval * weight [i];
 		}
 
