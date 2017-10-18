@@ -18,28 +18,31 @@ public class Basis: MonoBehaviour {
 		//SetUniform (5); // TODO : replace with SetOpenUniform, SetBezier, ...
 		switch (integration) {
 		case 0:
-			SetUniform (5);
+			SetUniform (10);
 			break;
 		case 1:
-			SetOpenUniform (5);
+			SetOpenUniform (10);
 			break;
 		case 2:
 			SetBezier (3);
 			break;
 		default:
-			SetUniform (5);
+			SetUniform (10);
 			break;
 		}
 	}
 
 
 	public void SetUniform(int nb) {
-		/*knot.Clear();
+		knot.Clear();
 		this.degree = 2;
 
 		for (int i = 0; i < nb; i++) {
 			knot.Add ((i * 1.0) / (nb * 1.0));
-		}*/
+		}
+	}
+
+	public void setKnotCircle() {
 		knot.Clear ();
 		for (int i = 0; i < 3; i++) {
 			knot.Add (0);
