@@ -74,19 +74,20 @@ public class Surface : MonoBehaviour {
 
 		for (int l = 0; l < nbControlV - basisV.degree - 1; l++) {
 			Vector3 pkl = Vector3.zero;
+			float wkl = 0.0f;
 
 			for (int k = 0; k < nbControlU - basisU.degree - 1; k++) {
-				float evalU = ((float)basisV.EvalNkp (k, basisU.degree, u));
+				float evalU = ((float)basisU.EvalNkp (k, basisU.degree, u));
 				pkl += evalU * position [k + l * nbControlU] * weight [k + l * nbControlU];
-				w += evalU * weight [k + l * nbControlU];
+				wkl += evalU * weight [k + l * nbControlU];
 			}
 
-			pkl = pkl / w;
 			float evalV = ((float)basisV.EvalNkp (l, basisV.degree, v));
-			result += evalV * pkl;
+			result += evalV * pkl * wkl /** weight[0 + l * nbControlU]*/;
+			w += evalV * wkl /** weight [0 + l * nbControlU]*/;
 		}
 
-		return result; // * 1.0f / (float)w;
+		return result / w; // * 1.0f / (float)w;
 	}
 
 	// Update is called once per frame

@@ -26,6 +26,9 @@ public class Basis: MonoBehaviour {
 		case 2:
 			SetBezier (3);
 			break;
+		case 3:
+			setKnotCircle ();
+			break;
 		default:
 			SetUniform (10);
 			break;
@@ -116,17 +119,17 @@ public class Basis: MonoBehaviour {
 			double n1 = (t - knot [k]);
 			double d1 = (knot [k + p] - knot [k]);
 			double left = 0.0;
-			if (Math.Abs(d1) > 0.0001)
+			if (Math.Abs(d1) >= 0.0001)
 				left = n1 / d1;
 
 			double n2 = (knot [p + k + 1] - t);
 			double d2 = (knot [p + k + 1] - knot [k + 1]);
 			double right = 0.0;
-			if (Math.Abs(d2) > 0.0001)
+			if (Math.Abs(d2) >= 0.0001)
 				right = n2 / d2;
 			
 			res = left * EvalNkp (k, p - 1, t) + right * EvalNkp (k + 1, p - 1, t); 
-		} else if (t >= knot [k] && t < knot [k + 1])
+		} else if (t >= knot [k] && t < knot [k + 1] && p == 0)
 			res = 1.0;
 
 
@@ -148,6 +151,10 @@ public class Basis: MonoBehaviour {
 				this.degree = nb - 1;
 				SetBezier (degree + nb + 1);
 				break;
+			case 3:
+				this.degree = 2;
+				setKnotCircle ();
+				break;
 			default:
 				SetUniform (degree + nb + 1);
 				break;
@@ -159,7 +166,8 @@ public class Basis: MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(KeyCode.C)) {
 			this.integration++;
-			this.integration = integration % 3;
+			this.integration = integration % 4;
+			SetFromControlCount (knot.Count);
 		}
 	}
 
