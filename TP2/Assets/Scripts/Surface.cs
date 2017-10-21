@@ -72,11 +72,11 @@ public class Surface : MonoBehaviour {
 		float w=0.0f;
 
 
-		for (int l = 0; l < nbControlV - basisV.degree - 1; l++) {
+		for (int l = 0; l < nbControlV; l++) {
 			Vector3 pkl = Vector3.zero;
 			float wkl = 0.0f;
 
-			for (int k = 0; k < nbControlU - basisU.degree - 1; k++) {
+			for (int k = 0; k < nbControlU; k++) {
 				float evalU = ((float)basisU.EvalNkp (k, basisU.degree, u));
 				pkl += evalU * position [k + l * nbControlU] * weight [k + l * nbControlU];
 				wkl += evalU * weight [k + l * nbControlU];
