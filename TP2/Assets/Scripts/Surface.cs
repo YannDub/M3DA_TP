@@ -65,7 +65,12 @@ public class Surface : MonoBehaviour {
 		basisV.SetFromControlCount(nbControlV);
 	}
 
-
+	void setRevolution() {
+		//Faire des cercles
+		//nU le nombre de poinrs par cercle
+		//nV la hauteur de la surface de révolution
+		//Utiliser random pour avoir des cercles non parfait
+	}
 
 	public Vector3 PointSurface(double u,double v) {
 		Vector3 result=Vector3.zero;
