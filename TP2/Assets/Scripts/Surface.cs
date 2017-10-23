@@ -90,8 +90,6 @@ public class Surface : MonoBehaviour {
 
 		basisU.SetFromControlCount (nbControlU);
 		basisV.SetFromControlCount (nbControlV);
-
-		Debug.Log (nbControlU);
 	}
 
 	public Vector3 PointSurface(double u,double v) {
