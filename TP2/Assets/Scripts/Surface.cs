@@ -18,7 +18,8 @@ public class Surface : MonoBehaviour {
 		weight = new List<float> ();
 		basisU = GameObject.Find ("BasisU").GetComponent<Basis> ();
 		basisV = GameObject.Find ("BasisV").GetComponent<Basis> ();
-		SetGrid ();  // TODO : or SetRevolution
+		//SetGrid ();  // TODO : or SetRevolution
+		setRevolution();
 		basisU.SetFromControlCount (nbControlU);
 		basisV.SetFromControlCount (nbControlV);
 	}
@@ -66,10 +67,31 @@ public class Surface : MonoBehaviour {
 	}
 
 	void setRevolution() {
-		//Faire des cercles
-		//nU le nombre de poinrs par cercle
-		//nV la hauteur de la surface de révolution
-		//Utiliser random pour avoir des cercles non parfait
+		nbControlU = 30;
+		nbControlV = 5;
+		position.Clear ();
+		weight.Clear ();
+		float u=-1;
+		float v=0;
+		float angle = 0;
+		float r = 1;
+		float stepV=2.0f/(nbControlV-1);
+
+		for (int i = 0; i < nbControlV; ++i) {
+			r = Random.Range (0.5f, 2f);
+			for (int j = 0; j < nbControlU; ++j) {
+				position.Add (new Vector3 (r * Mathf.Cos(Mathf.Deg2Rad * angle), r * Mathf.Sin(Mathf.Deg2Rad * angle), v));
+				weight.Add (1);
+				angle += 360.0f / (nbControlU - 1);
+			}
+			angle = 0;
+			v += stepV;
+		}
+
+		basisU.SetFromControlCount (nbControlU);
+		basisV.SetFromControlCount (nbControlV);
+
+		Debug.Log (nbControlU);
 	}
 
 	public Vector3 PointSurface(double u,double v) {
