@@ -12,6 +12,9 @@ public class Surface : MonoBehaviour {
 	public Basis basisU; // basis functions in direction U
 	public Basis basisV; // basis functions in direction V
 
+	private bool move = false;
+	private int selected = -1; 
+
 	// Use this for initialization
 	void Start () {
 		position = new List<Vector3> ();
@@ -115,9 +118,58 @@ public class Surface : MonoBehaviour {
 		return result / w; // * 1.0f / (float)w;
 	}
 
+	int Closest(Ray mouse, float cap) {
+		int c = -1;
+		if (this.position.Count != 0) {
+			float d = Vector3.Cross (mouse.direction, position [0] - mouse.origin).magnitude;
+			c = 0;
+			for (int i = 0; i < this.position.Count; ++i) {
+				float r = Vector3.Cross (mouse.direction, this.position [i] - mouse.origin).magnitude;
+				Debug.Log (r);
+				if (r < d) {
+					d = r;
+					c = i;
+				}
+			}
+			if (d > cap) {
+				c = -1;
+			}
+		}
+		return c;
+	}
+
+	private Ray mouseLocal() {
+		return Camera.main.ScreenPointToRay (Input.mousePosition);
+	}
+
 	// Update is called once per frame
 	void Update () {
 		basisU.SetFromControlCount (nbControlU);
 		basisV.SetFromControlCount (nbControlV);
+
+		if (Input.GetMouseButtonDown (1)) {
+			Ray p = mouseLocal();
+			selected = Closest (p, 0.1f);
+			if (selected != -1)
+				move = true;
+		}
+		if (Input.GetMouseButton (1)) {
+			if (move && selected != -1) {
+				Ray p = mouseLocal();
+				this.position [selected] += new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), 0);
+			}
+		}
+		if (Input.GetAxis ("Mouse ScrollWheel") < 0) {
+			Ray p = mouseLocal();
+			int change = Closest (p, 0.1f);
+			if (change != -1)
+				this.weight [change] *= 0.9f;
+		}
+		if (Input.GetAxis ("Mouse ScrollWheel") > 0) {
+			Ray p = mouseLocal();
+			int change = Closest (p, 0.1f);
+			if (change != -1)
+				this.weight [change] *= 1.1f;
+		}
 	}
 }
