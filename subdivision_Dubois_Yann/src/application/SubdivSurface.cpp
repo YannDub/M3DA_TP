@@ -94,6 +94,15 @@ void SubdivSurface::computePointFace() {
    */
   _pointFace.clear();
 
+  for(unsigned int i = 0; i < _input->nbFace(); i++) {
+    Vector3 f = Vector3(0,0,0);
+    float n = _input->nbVertexFace(i);
+    for(unsigned int k = 0; k < n; k++) {
+        f += _input->positionVertexFace(i,k);
+    }
+    f /= n;
+    _pointFace.push_back(f);
+  }
 }
 
 void SubdivSurface::computePointEdge() {
@@ -106,6 +115,11 @@ void SubdivSurface::computePointEdge() {
    */
   _pointEdge.clear();
 
+  for(unsigned int i = 0; i < _edge.size(); i++) {
+      Vector3 vAdd = _input->positionMesh(_edge[i]._a) + _input->positionMesh(_edge[i]._b);
+      Vector3 fAdd = _pointFace[_edge[i]._left] + _pointFace[_edge[i]._right];
+      _pointEdge.push_back((vAdd + fAdd) / 4.0f);
+  }
 }
 
 
@@ -116,6 +130,24 @@ void SubdivSurface::computePointVertex() {
    */
   _pointVertex.clear();
 
+  unsigned int n = _edgeOfVertex.size();
+
+  for(unsigned int i = 1; i < n; i++) {
+    Vector3 vi = _input->positionMesh(i);
+    Vector3 e = Vector3(0,0,0);
+    Vector3 f = Vector3(0,0,0);
+
+    unsigned int ne = _edgeOfVertex[i].size();
+    for(unsigned int j = 0; j < ne; j++) {
+        e += _pointEdge[_edgeOfVertex[i][j]];
+
+        if(_edge[_edgeOfVertex[i][j]]._a == i) f += _pointFace[_edge[_edgeOfVertex[i][j]]._left];
+        else f += _pointFace[_edge[_edgeOfVertex[i][j]]._right];
+    }
+
+    Vector3 res = (ne - 2.0f) / ne * vi + (1.0f / (ne * ne)) * e + (1.0f / (ne * ne)) * f;
+    _pointVertex.push_back(res);
+  }
 }
 
 int SubdivSurface::findNextEdge(int i,int j) {
