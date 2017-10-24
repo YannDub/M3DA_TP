@@ -38,7 +38,6 @@ void SubdivCurve::chaikinIter(const vector<Vector3> &p) {
       if(this->isClosed() && i == p.size() - 1) pi1 = p[0];
       _result.push_back((3.0f / 4.0f) * p[i] + (1.0f / 4.0f) * pi1);
 
-      if(this->isClosed() && i == p.size() - 1) pi1 = p[0];
       _result.push_back((1.0f / 4.0f) * p[i] + (3.0f / 4.0f) * pi1);
     }
 }
@@ -47,6 +46,11 @@ void SubdivCurve::dynLevinIter(const vector<Vector3> &p) {
   /* TODO : one iteration of DynLevin : input = p, output = you must set the vector _result (vector of Vector3)
    */
   _result.clear();
+
+    for(unsigned int i = 0; i < p.size(); i++) {
+        _result.push_back(p[i % p.size()]);
+        _result.push_back(-(1.0f / 16.0f) * (p[(i + 2) % p.size()] + p[(i + 1) % p.size()]) + (9.0f / 16.0f) * (p[(i + 1) % p.size()] + p[i % p.size()]));
+    }
 
 }
 
