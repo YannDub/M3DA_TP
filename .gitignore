@@ -5,3 +5,6 @@ Library/
 Temp/
 
 *.csproj
+
+build-*/
+*.prop.user*
