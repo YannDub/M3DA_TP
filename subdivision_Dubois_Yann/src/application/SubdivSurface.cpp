@@ -132,7 +132,7 @@ void SubdivSurface::computePointVertex() {
 
   unsigned int n = _edgeOfVertex.size();
 
-  for(unsigned int i = 1; i < n; i++) {
+  for(unsigned int i = 0; i < n; i++) {
     Vector3 vi = _input->positionMesh(i);
     Vector3 e = Vector3(0,0,0);
     Vector3 f = Vector3(0,0,0);
@@ -185,12 +185,16 @@ void SubdivSurface::buildMesh() {
         unsigned int ip = i;
         unsigned int ie1 = sizeV + sizeF + _edgeOfVertex[i][j];
 
-        unsigned int iface = sizeV + _edge[_edgeOfVertex[i][j]]._right;
-        if(ip == _edge[_edgeOfVertex[i][j]]._a) iface = sizeV + _edge[_edgeOfVertex[i][j]]._left;
+        unsigned int iface = 0;
+        if(ip == _edge[_edgeOfVertex[i][j]]._a)
+            iface = sizeV + _edge[_edgeOfVertex[i][j]]._left;
+        else
+            iface = sizeV + _edge[_edgeOfVertex[i][j]]._right;
 
         unsigned int ie2 = 0;
 
         for(int k = 0; k < nbIncident; k++) {
+
             if(ip == _edge[_edgeOfVertex[i][j]]._a) {
                 if(ip == _edge[_edgeOfVertex[i][k]]._a) {
                     if(_edge[_edgeOfVertex[i][j]]._left == _edge[_edgeOfVertex[i][k]]._right)
