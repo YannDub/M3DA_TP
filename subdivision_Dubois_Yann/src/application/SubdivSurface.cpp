@@ -164,6 +164,60 @@ void SubdivSurface::buildMesh() {
    *
    */
 
+  unsigned int sizeV = _pointVertex.size();
+  for(unsigned int i = 0; i < sizeV; i++) {
+      m->addPositionMesh(_pointVertex[i]);
+  }
+
+  unsigned int sizeF = _pointFace.size();
+  for(unsigned int i = 0; i < sizeF; i++) {
+      m->addPositionMesh(_pointFace[i]);
+  }
+
+  unsigned int sizeE = _pointEdge.size();
+  for(unsigned int i = 0; i < sizeE; i++) {
+      m->addPositionMesh(_pointEdge[i]);
+  }
+
+  for(unsigned int i = 0; i < sizeV; i++) {
+    unsigned int nbIncident = _edgeOfVertex[i].size();
+    for(unsigned int j = 0; j < nbIncident; j++) {
+        unsigned int ip = i;
+        unsigned int ie1 = sizeV + sizeF + _edgeOfVertex[i][j];
+
+        unsigned int iface = sizeV + _edge[_edgeOfVertex[i][j]]._right;
+        if(ip == _edge[_edgeOfVertex[i][j]]._a) iface = sizeV + _edge[_edgeOfVertex[i][j]]._left;
+
+        unsigned int ie2 = 0;
+
+        for(int k = 0; k < nbIncident; k++) {
+            if(ip == _edge[_edgeOfVertex[i][j]]._a) {
+                if(ip == _edge[_edgeOfVertex[i][k]]._a) {
+                    if(_edge[_edgeOfVertex[i][j]]._left == _edge[_edgeOfVertex[i][k]]._right)
+                        ie2 = sizeV + sizeF + _edgeOfVertex[i][k];
+                }
+
+                if(ip == _edge[_edgeOfVertex[i][k]]._b) {
+                    if(_edge[_edgeOfVertex[i][j]]._left == _edge[_edgeOfVertex[i][k]]._left)
+                        ie2 = sizeV + sizeF + _edgeOfVertex[i][k];
+                }
+
+            } else {
+                if(ip == _edge[_edgeOfVertex[i][k]]._a) {
+                    if(_edge[_edgeOfVertex[i][j]]._right == _edge[_edgeOfVertex[i][k]]._right)
+                        ie2 = sizeV + sizeF + _edgeOfVertex[i][k];
+                }
+
+                if(ip == _edge[_edgeOfVertex[i][k]]._b) {
+                    if(_edge[_edgeOfVertex[i][j]]._right == _edge[_edgeOfVertex[i][k]]._left)
+                        ie2 = sizeV + sizeF + _edgeOfVertex[i][k];
+                }
+            }
+        }
+
+        m->addFaceMesh({ip, ie1, iface, ie2});
+    }
+  }
 
   /* end TODO */
 
