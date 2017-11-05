@@ -146,7 +146,22 @@ void MultiCurve::analysisStep() {
    * use _currentCurve (contains the points of the current level+1)
    */
 
+    _detail[level].clear();
+    int length = pow(2.0, level);
 
+    for(int j = 0; j < length; j++) {
+        Vector3 p1 = (-1.0 / 4.0) * _currentCurve[(2 * j) % n];
+        Vector3 p2 = (3.0 / 4.0) * _currentCurve[(2 * j + 1) % n];
+        Vector3 p3 = (3.0 / 4.0) * _currentCurve[(2 * j + 2) % n];
+        Vector3 p4 = (-1.0 / 4.0) * _currentCurve[(2 * j + 3) % n];
+        coarse.push_back(p1 + p2 + p3 + p4);
+
+        Vector3 d1 = (1.0 / 4.0) * _currentCurve[(2 * j) % n];
+        Vector3 d2 = (-3.0 / 4.0) * _currentCurve[(2 * j + 1) % n];
+        Vector3 d3 = (3.0 / 4.0) * _currentCurve[(2 * j + 2) % n];
+        Vector3 d4 = (-1.0 / 4.0) * _currentCurve[(2 * j + 3) % n];
+        _detail[level].push_back(d1 + d2 + d3 + d4);
+    }
 
   /* end TODO
    */
