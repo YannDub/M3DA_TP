@@ -123,8 +123,25 @@ void MultiCurve::synthesisStep() {
    * use _currentCurve (contains the points of the current level) and _detail[level] (the detail coefficients).
    */
   finer.resize(n*2); // finer will contain next level
+    finer.clear();
+
+    int length = pow(2.0, level + 1);
+
+    for(int j = 0; j < length; j++) {
+        Vector3 Pn;
+        Vector3 Qn;
+
+        if(j % 2 == 0) {
+            Pn = (3.0 / 4.0) * _currentCurve[(n + j / 2 - 1) % n] + (1.0 / 4.0) * _currentCurve[(j / 2) % n];
+            Qn = (1.0 / 4.0) * _detail[level][(n + j / 2) % n] + (-3.0 / 4.0) * _detail[level][(j / 2) % n];
+        } else {
+            Pn = (1.0 / 4.0) * _currentCurve[(n + j / 2 - 1) % n] + (3.0 / 4.0) * _currentCurve[(j / 2) % n];
+            Qn = (3.0 / 4.0) * _detail[level][(n + j / 2 - 1) % n] + (-1.0 / 4.0) * _detail[level][(j / 2) % n];
+        }
 
 
+        finer.push_back(Pn + Qn);
+    }
 
   /* end TODO
    */
@@ -145,7 +162,7 @@ void MultiCurve::analysisStep() {
   /* TODO : set the vector coarse and _detail[level] to represent the level curve from level+1
    * use _currentCurve (contains the points of the current level+1)
    */
-
+    coarse.clear();
     _detail[level].clear();
     int length = pow(2.0, level);
 
