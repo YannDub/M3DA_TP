@@ -1,5 +1,7 @@
 Dubois Yann
 
-Tout a été fait sauf la dernière question par manque de temps sinon tout fonctionne parfaitement
+Tout a été fait et fonctionne parfaitement
 
-Il y a un petit problème lié à la façon donc Unity charge les objets. Il faut donc activé / désactivé les composants pour que les surfaces fonctionnent bien
+- La touche C permet de changer les type de courbes (bésier, openUniform, circle, etc...)
+- La molette permet de changer le poid des points
+- Un clique droit permet de bouger les points de contrôle
